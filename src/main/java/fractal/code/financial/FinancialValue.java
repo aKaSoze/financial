@@ -16,7 +16,7 @@ public class FinancialValue {
 
     public FinancialValue convertTo(Currency otherCurrency, Exchange exchange) {
         if (otherCurrency == currency) return this;
-        else return new FinancialValue(exchange.convert(numericValue, currency, otherCurrency), otherCurrency);
+        else return exchange.convert(this, otherCurrency);
     }
 
     public Number getNumericValue() {
@@ -27,8 +27,13 @@ public class FinancialValue {
         return currency;
     }
 
+    public FinancialValue divide(Number divider) {
+        return new FinancialValue(numericValue.doubleValue() / divider.doubleValue(), currency);
+    }
+
     @Override
     public String toString() {
-        return numericValue + " " + currency;
+        return String.format("%.4f", numericValue) + " " + currency;
     }
+
 }

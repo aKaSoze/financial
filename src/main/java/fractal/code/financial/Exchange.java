@@ -17,8 +17,10 @@ public class Exchange {
         rates.put(new Tuple<>(toCurrency, fromCurrency), 1 / rate.doubleValue());
     }
 
-    public Double convert(Number value, Currency fromCurrency, Currency toCurrency) {
-        return rates.get(new Tuple<>(fromCurrency, toCurrency)).doubleValue() * value.doubleValue();
+    public FinancialValue convert(FinancialValue fromFV, Currency toCurrency) {
+        Tuple<Currency, Currency> ratesKey = new Tuple<>(fromFV.getCurrency(), toCurrency);
+        return new FinancialValue(rates.get(ratesKey).doubleValue() * fromFV.getNumericValue().doubleValue(),
+                toCurrency);
     }
 
 }

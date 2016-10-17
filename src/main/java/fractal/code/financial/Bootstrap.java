@@ -1,5 +1,6 @@
 package fractal.code.financial;
 
+import fractal.code.calendar.CalendarUtils;
 import org.joda.time.DateTime;
 
 import java.time.Month;
@@ -23,9 +24,18 @@ public class Bootstrap {
                 Optional.<DateTime>empty());
 
         Exchange exchange = new Exchange();
-        exchange.registerRate(Currency.Euro, Currency.RomanianLeu, 4.46);
+        exchange.registerRate(Currency.Euro, Currency.RomanianLeu,  4.5113);
 
-        contract.getBill(Month.AUGUST, 21L, exchange);
+        Invoice invoice = contract.calculateInvoice(Month.SEPTEMBER, CalendarUtils.getNumberOfWeekDays(Month.SEPTEMBER) - 7);
 
+        InvoicePrinter invoicePrinter = new ConsoleInvoicePrinter();
+        invoicePrinter.print(invoice);
+        invoicePrinter.print(invoice.switchCurrency(Currency.RomanianLeu, exchange));
+
+        invoice = contract.calculateInvoice(Month.OCTOBER, CalendarUtils.getNumberOfWeekDays(Month.OCTOBER));
+        invoicePrinter.print(invoice);
+        invoicePrinter.print(invoice.switchCurrency(Currency.RomanianLeu, exchange));
+
+        System.out.println(CalendarUtils.getNumberOfWeekDays(Month.SEPTEMBER));
     }
 }
